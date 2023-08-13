@@ -28,6 +28,16 @@ server {
                  proxy_set_header X-Forwarded-Proto \$scheme;
 
         }
+
+	location ~* ^.+\.(txt|jpg|jpeg|gif|mpg|mpeg|avi|png|swf|ico|zip|rar|sdt|js|bmp|wav|mp3|mmf|mid|vkp|sisx|sis|exe|jar|thm|nth|doc)$ {
+                     root /var/www/word.local/;
+                     expires 1d;
+         }
+
+         location ~ /\.ht {
+                deny all;
+        }
+
 }"> /etc/nginx/sites-available/$autoname.conf
 
 	sudo ln -s /etc/nginx/sites-available/$autoname.conf /etc/nginx/sites-enabled/$autoname.conf
