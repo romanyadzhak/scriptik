@@ -9,7 +9,7 @@ if [ "$permition" = "y" ];then
 	rm -rf /etc/apache2/sites-enabled/$autoname.conf
 	rm -rf /var/www/$autoname
 	rm -rf /var/log/apache2/$autoname*.log
-	echo "===Site $autoname hes been removed==="
+	echo "===Site $autoname has been removed==="
 	echo "-------------------------------------"
 else
 	echo "Start with sudo permition"

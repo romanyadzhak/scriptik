@@ -3,16 +3,16 @@
 read -p "Enter auto site name: " autoname
 touch /etc/apache2/sites-available/$autoname.conf
 echo -e  "<VirtualHost *:85>
-	\n	ServerName $autoname
+	\n	#ServerName $autoname
 	\n              #Using Word Press
         \n      #DirectoryIndex index.php
         \n              #Using Joomla
         \n      #DirectoryIndex index.html index.php
-	\n	ServerAdmin webmaster@$autoname
-	\n	DocumentRoot /var/www/$autoname
-	\n	ErrorLog /var/log/apache2/$autoname-error.log
-	\n	CustomLog /var/log/apache2/$autoname-access.log combined
-	\n              # using for Drupal Site
+		#ServerAdmin webmaster@$autoname
+		#DocumentRoot /var/www/$autoname
+		#ErrorLog /var/log/apache2/$autoname-error.log
+		#CustomLog /var/log/apache2/$autoname-access.log combined
+	\n              # Using for Drupal Site
         \n      #<Directory /var/www/$autoname>
                 #   Options Indexes FollowSymLinks
                 #   AllowOverride All
@@ -24,13 +24,22 @@ echo -e  "<VirtualHost *:85>
                 #   RewriteRule ^(.*)$ index.php?q=$1 [L,QSA]
                 #</Directory>
 
-              #using for opencart
+	              #Using for Opencart
 
-       # <Directory /var/www/$autoname/opencart-master/upload>
-       #         allowoverride all
-       #         allow from all
-       #    </Directory>
-        \n
+		ServerAdmin admin@$autoname
+		DocumentRoot /var/www/$autoname/
+		ServerName $autoname
+		ServerAlias www.$autoname
+
+		ErrorLog \${APACHE_LOG_DIR}/$autoname-error.log
+		CustomLog \${APACHE_LOG_DIR}/$autoname-access.log combined
+
+		 <Directory /var/www/$autoname/>
+       			 Options FollowSymlinks
+       			 AllowOverride All
+       			 Require all granted
+		 </Directory>
+
 	\n</VirtualHost>">> /etc/apache2/sites-available/$autoname.conf
 mkdir /var/www/$autoname
 touch /var/www/$autoname/index.html

@@ -4,8 +4,8 @@ read -p "Did you start script with sudo permition (y/n): " permition
 
 if [ "$permition" = "y" ];then
 	read -p "Enter nginx site name: " autoname
-	touch /etc/apache2/sites-available/$autoname.conf
-
+	touch /etc/nginx/sites-available/$autoname.conf
+	mkdir /etc/nginx/nginx_self/ssl/$autoname
 	echo -e "\n
 server {
         listen 80;
@@ -15,7 +15,7 @@ server {
 
         server_name $autoname;
 
-        return 301 https://\$server_name$request_uri;
+#        return 301 https://\$server_name$request_uri;
 
 #	  include /etc/nginx/nginx_self/location.default;
 #         include /etc/nginx/nginx_self/location.proxy;
