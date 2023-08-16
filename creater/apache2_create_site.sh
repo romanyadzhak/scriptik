@@ -23,6 +23,13 @@ echo -e  "<VirtualHost *:85>
                 #   RewriteCond %{REQUEST_FILENAME} !-d
                 #   RewriteRule ^(.*)$ index.php?q=$1 [L,QSA]
                 #</Directory>
+
+              #using for opencart
+
+       # <Directory /var/www/$autoname/opencart-master/upload>
+       #         allowoverride all
+       #         allow from all
+       #    </Directory>
         \n
 	\n</VirtualHost>">> /etc/apache2/sites-available/$autoname.conf
 mkdir /var/www/$autoname
