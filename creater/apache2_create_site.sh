@@ -26,19 +26,14 @@ echo -e  "<VirtualHost *:85>
 
 	              #Using for Opencart
 
-		ServerAdmin admin@$autoname
-		DocumentRoot /var/www/$autoname/
 		ServerName $autoname
-		ServerAlias www.$autoname
+	        ServerAlias www.$autoname
+                ServerAdmin webmaster@$autoname
+	        DirectoryIndex index.php
+                DocumentRoot /var/www/$autoname/upload
 
-		ErrorLog \${APACHE_LOG_DIR}/$autoname-error.log
-		CustomLog \${APACHE_LOG_DIR}/$autoname-access.log combined
-
-		 <Directory /var/www/$autoname/>
-       			 Options FollowSymlinks
-       			 AllowOverride All
-       			 Require all granted
-		 </Directory>
+                ErrorLog \${APACHE_LOG_DIR}/$autoname-error.log
+                CustomLog \${APACHE_LOG_DIR}/$autoname-access.log combined
 
 	\n</VirtualHost>">> /etc/apache2/sites-available/$autoname.conf
 mkdir /var/www/$autoname
