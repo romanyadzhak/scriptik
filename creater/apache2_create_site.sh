@@ -3,17 +3,26 @@
 read -p "Enter auto site name: " autoname
 touch /etc/apache2/sites-available/$autoname.conf
 echo -e  "<VirtualHost *:85>
-	\n	#ServerName $autoname
+	\n	ServerName $autoname
 	\n              #Using Word Press
         \n      #DirectoryIndex index.php
-        \n              #Using Joomla
-        \n      #DirectoryIndex index.html index.php
-		#ServerAdmin webmaster@$autoname
-		#DocumentRoot /var/www/$autoname
-		#ErrorLog /var/log/apache2/$autoname-error.log
-		#CustomLog /var/log/apache2/$autoname-access.log combined
-	\n              # Using for Drupal Site
-        \n      #<Directory /var/www/$autoname>
+
+		        #Using Joomla
+		#DirectoryIndex index.html index.php
+
+			#Using for Opencart
+                #DirectoryIndex index.php
+
+                ServerAlias www.$autoname
+                ServerAdmin webmaster@$autoname
+                DocumentRoot /var/www/$autoname/ #upload
+
+                ErrorLog \${APACHE_LOG_DIR}/$autoname-error.log
+                CustomLog \${APACHE_LOG_DIR}/$autoname-access.log combined
+
+		        # Using for Drupal Site
+
+		#<Directory /var/www/$autoname>
                 #   Options Indexes FollowSymLinks
                 #   AllowOverride All
                 #   Require all granted
@@ -23,17 +32,6 @@ echo -e  "<VirtualHost *:85>
                 #   RewriteCond %{REQUEST_FILENAME} !-d
                 #   RewriteRule ^(.*)$ index.php?q=$1 [L,QSA]
                 #</Directory>
-
-	              #Using for Opencart
-
-		ServerName $autoname
-	        ServerAlias www.$autoname
-                ServerAdmin webmaster@$autoname
-	        DirectoryIndex index.php
-                DocumentRoot /var/www/$autoname/upload
-
-                ErrorLog \${APACHE_LOG_DIR}/$autoname-error.log
-                CustomLog \${APACHE_LOG_DIR}/$autoname-access.log combined
 
 	\n</VirtualHost>">> /etc/apache2/sites-available/$autoname.conf
 mkdir /var/www/$autoname

@@ -1,0 +1,4 @@
+
+Before using script:
+sudo apt install sshpass
+sudo apt install openssl

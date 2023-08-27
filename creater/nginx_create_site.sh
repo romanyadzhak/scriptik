@@ -15,25 +15,30 @@ server {
 
         server_name $autoname;
 
+		# ===Redirect on https===
 #        return 301 https://\$server_name$request_uri;
 
-#	  include /etc/nginx/nginx_self/location.default;
-#         include /etc/nginx/nginx_self/location.proxy;
-#         include /etc/nginx/nginx_self/location.secur;
+                #===if nginx site not answer -- it loaded default page===
+         location /default/ {
+                index index.nginx-debian.html;
+                root /var/www/html;
+        }
 
-#         location ~* ^.+\.(txt|jpg|jpeg|gif|mpg|mpeg|avi|png|swf|ico|zip|rar|sdt|js|bmp|wav|mp3|mmf|mid|vkp|sisx|sis|exe|jar|thm|nth|doc)$
-#          {
-#                    root /var/www/$autoname/;
-#                    expires 1d;
-#          }
+                #===location for site
+         location / {
+                 proxy_pass http://back-apache;
+                 proxy_set_header Host \$http_host;
+                 proxy_set_header X-Real-IP \$remote_addr;
+                 proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+                 proxy_set_header X-Forwarded-Proto \$scheme;
+
+        }
+
 
 }
 
 server {
         listen   443 ssl;
-
-    #    root /var/www/html/;
-    #    index index.php index.html index.htm;
 
          server_name $autoname;
 
@@ -42,8 +47,8 @@ server {
          gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript application/javascript;
 
 
-         ssl_certificate      /etc/nginx/nginx_self/ssl/$autoname/$autoname.crt;
-         ssl_certificate_key  /etc/nginx/nginx_self/ssl/$autoname/$autoname.key;
+#         ssl_certificate      /etc/nginx/nginx_self/ssl/$autoname/$autoname.crt;
+#         ssl_certificate_key  /etc/nginx/nginx_self/ssl/$autoname/$autoname.key;
 
          ssl_session_cache    shared:SSL:1m;
          ssl_session_timeout  5m;
@@ -51,13 +56,15 @@ server {
          ssl_ciphers  HIGH:!aNULL:!MD5;
          ssl_prefer_server_ciphers  on;
 
+		#===if nginx site not answer -- it loaded default page===
 	 location /default/ {
                 index index.nginx-debian.html;
                 root /var/www/html;
         }
 
+		#===location for site
          location / {
-                 proxy_pass http://127.0.0.1:85;
+                 proxy_pass http://back-apache;
                  proxy_set_header Host \$http_host;
                  proxy_set_header X-Real-IP \$remote_addr;
                  proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
@@ -65,11 +72,13 @@ server {
 
         }
 
+		# ===Static for nginx===
 	location ~* ^.+\.(txt|jpg|jpeg|gif|mpg|mpeg|avi|png|swf|ico|zip|rar|sdt|js|bmp|wav|mp3|mmf|mid|vkp|sisx|sis|exe|jar|thm|nth|doc)$ {
                      root /var/www/$autoname/;
                      expires 1d;
          }
 
+		# ===additional securitu===
          location ~ /\.ht {
                 deny all;
         }
